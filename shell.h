@@ -1,13 +1,14 @@
 #ifndef _SHELL_H_
 #define _SHELL_H_
 
+
+#include <string.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <string.h>
-#include <sys/types.h>
-#include <sys/wait.h>
-#include <sys/stat.h>
 #include <limits.h>
 #include <fcntl.h>
 #include <errno.h>
@@ -39,8 +40,8 @@ extern char **environ;
 
 /**
  * struct liststr - singly linked list
- * @num: the number field
  * @str: a string
+ * @num: the number of field
  * @next: points to the next node
  */
 typedef struct liststr
@@ -49,7 +50,6 @@ typedef struct liststr
 	char *str;
 	struct liststr *next;
 } list_t;
-
 /**
  * struct passinfo - contains pseudo-arguements to pass into a function,
  * allowing uniform prototype for function pointer struct
@@ -72,10 +72,14 @@ typedef struct liststr
  * @readfd: the fd from which to read line input
  * @histcount: the history line number count
  */
+
 typedef struct passinfo
 {
 	char *arg;
 	char **argv;
+	char **environ;
+	int env_changed;
+	int status;
 	char *path;
 	int argc;
 	unsigned int line_count;
@@ -85,9 +89,6 @@ typedef struct passinfo
 	list_t *env;
 	list_t *history;
 	list_t *alias;
-	char **environ;
-	int env_changed;
-	int status;
 
 	char **cmd_buf; /* pointer to cmd ; chain buffer, for memory mangement */
 	int cmd_buf_type; /* CMD_type ||, &&, ; */
@@ -128,8 +129,8 @@ int loophsh(char **);
 /* toem_errors.c */
 void _eputs(char *);
 int _eputchar(char);
-int _putfd(char c, int fd);
-int _putsfd(char *str, int fd);
+int _putfd(char a, int df);
+int _putsfd(char *str, int df);
 
 /* toem_string.c */
 int _strlen(char *);
